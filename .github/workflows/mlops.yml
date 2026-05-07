@@ -100,6 +100,18 @@ jobs:
           print("PRIVATE_KEY_EXISTS:", "PRIVATE KEY" in data.get("private_key", ""))
           EOF
 
+      #PART:FORCE_GCS_AUTH
+      - name: Force GCS auth
+        run: |
+          dvc remote modify myremote credentialpath "${GOOGLE_APPLICATION_CREDENTIALS}"
+
+      #PART:SHOW_DVC_CONFIG
+      - name: Show DVC config
+        run: |
+          dvc remote list
+          dvc remote list --local || true
+          cat .dvc/config
+
       - name: Pull data with DVC
         # TODO 3: Pull cac file du lieu can thiet tu cloud storage bang lenh dvc pull.
         #         Chi pull train_phase1.csv va eval.csv (khong can train_phase2.csv).
