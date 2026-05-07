@@ -81,6 +81,25 @@ jobs:
         run: |
           gcloud auth list
 
+      #PART:DEBUG_CREDS
+      - name: Debug credentials
+        run: |
+          python - <<'EOF'
+          import json
+          import os
+
+          path = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+
+          print("PATH:", path)
+
+          with open(path) as f:
+              data = json.load(f)
+
+          print("TYPE:", data.get("type"))
+          print("CLIENT:", data.get("client_email"))
+          print("PRIVATE_KEY_EXISTS:", "PRIVATE KEY" in data.get("private_key", ""))
+          EOF
+
       - name: Pull data with DVC
         # TODO 3: Pull cac file du lieu can thiet tu cloud storage bang lenh dvc pull.
         #         Chi pull train_phase1.csv va eval.csv (khong can train_phase2.csv).
