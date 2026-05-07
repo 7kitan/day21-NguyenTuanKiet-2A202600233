@@ -2,7 +2,7 @@ name: MLOps Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - 'data/**.dvc'
       - 'src/**.py'
@@ -195,13 +195,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-       - name: SSH deploy to VM
-         uses: appleboy/ssh-action@v1.0.3
-         with:
-           host: ${{ secrets.VM_HOST }}
-           username: ${{ secrets.VM_USER }}
-           key: ${{ secrets.VM_SSH_KEY }}
-           script: |
-             sudo systemctl restart mlops-serve
-             sleep 5
-             curl -sf http://localhost:8000/health && echo "Health check passed." || exit 1
+      - name: SSH deploy to VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            sudo systemctl restart mlops-serve
+            sleep 5
+            curl -sf http://localhost:8000/health && echo "Health check passed." || exit 1
