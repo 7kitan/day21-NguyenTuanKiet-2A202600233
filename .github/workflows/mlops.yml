@@ -136,24 +136,23 @@ jobs:
         # TODO 5: Su dung cloud SDK de upload models/model.pkl len
         #         <bucket>/models/latest/model.pkl.
         #         Ten bucket lay tu secret CLOUD_BUCKET.
+        env:
+          CLOUD_BUCKET: ${{ secrets.CLOUD_BUCKET }}
         run: |
           python - <<'EOF'
           from google.cloud import storage
           import os
 
           bucket_name = os.environ["CLOUD_BUCKET"]
+
           client = storage.Client()
           bucket = client.bucket(bucket_name)
+
           blob = bucket.blob("models/latest/model.pkl")
           blob.upload_from_filename("models/model.pkl")
+
           print(f"Model uploaded to gs://{bucket_name}/models/latest/model.pkl")
           EOF
-
-      - name: Save metrics as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: metrics
-          path: outputs/metrics.json
 
   # ---------------------------------------------------------------------------
   # JOB 3 - EVAL
