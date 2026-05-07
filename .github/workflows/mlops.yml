@@ -80,7 +80,6 @@ jobs:
       - name: Verify auth
         run: |
           gcloud auth list
-          gcloud storage ls
 
       - name: Pull data with DVC
         # TODO 3: Pull cac file du lieu can thiet tu cloud storage bang lenh dvc pull.
